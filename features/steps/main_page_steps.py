@@ -1,4 +1,5 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
 from behave import given, when, then
 from time import sleep
 
@@ -12,7 +13,10 @@ HEADER_LINKS = (By.CSS_SELECTOR, "[id*='utilityNav']")
 @given('Open target main page')
 def open_target_main(context):
     context.driver.get('https://www.target.com/')
-    sleep(2)
+    context.driver.wait.until(
+        EC.element_to_be_clickable(SEARCH_FIELD),
+        message='Search field not clickable'
+    )
 
 
 @when('Search for {search_word}')
