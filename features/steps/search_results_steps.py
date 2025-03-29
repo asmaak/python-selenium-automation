@@ -9,11 +9,14 @@ ADD_CART_BUTTON_SIDE_NAV=(By.CSS_SELECTOR, "[data-test='orderPickupButton']")
 ADD_CART_BUTTON=(By.CSS_SELECTOR, "[id*='addToCartButton']")
 ITEM_ADDED=(By.CSS_SELECTOR, "[data-test='modal-drawer-heading']")
 SIDE_NAV_PRODUCT_NAME=(By.CSS_SELECTOR,"[data-test='content-wrapper'] h4")
+LISTINGS=(By.CSS_SELECTOR,"[data-test='@web/site-top-of-funnel/ProductCardWrapper']")
+PRODUCT_TITLE=(By.CSS_SELECTOR,"[data-test='product-title']")
+PRODUCT_IMAGE=(By.CSS_SELECTOR,"[data-test='@web/ProductCard/ProductCardImage/primary']")
 
 @then('Verify correct search results shown for {expected_text}')
 def verify_search_results(context, expected_text):
-    actual_text = context.driver.find_element(*SEARCH_RESULTS_TEXT).text
-    assert expected_text in actual_text, f'Error. Text {expected_text} not in {actual_text}'
+    context.app.search_results_page.verify_search_results(expected_text)
+
 
 @given('Open target search products')
 def open_target_main(context):
@@ -48,3 +51,18 @@ def store_product_name(context):
 def click_on_add_to_cart_button_from_side_nav(context):
     context.driver.find_element(*ADD_CART_BUTTON_SIDE_NAV).click()
     sleep(6)
+@then('Verify that every product has a name and an image')
+def verify_product_name_and_image_(context):
+    # To see ALL listings (comment out if you only check top ones):
+    # context.driver.execute_script("window.scrollBy(0,2000)", "")
+    # sleep(2)
+    # context.driver.execute_script("window.scrollBy(0,1000)", "")
+    # sleep(2)
+
+    products= context.driver.find_elements(*LISTINGS)[:8]
+    print(products)
+    for product in products:
+        title=product.find_element(*PRODUCT_TITLE).text
+        assert title,'Product title not shown'
+        print(title)
+        product.find_element(*PRODUCT_IMAGE)
