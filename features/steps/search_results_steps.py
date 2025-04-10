@@ -6,7 +6,6 @@ from time import sleep
 
 SEARCH_RESULTS_TEXT = (By.XPATH, "//div[@data-test='lp-resultsCount']")
 ADD_CART_BUTTON_SIDE_NAV=(By.CSS_SELECTOR, "[data-test='orderPickupButton']")
-ADD_CART_BUTTON=(By.CSS_SELECTOR, "[id*='addToCartButton']")
 ITEM_ADDED=(By.CSS_SELECTOR, "[data-test='modal-drawer-heading']")
 SIDE_NAV_PRODUCT_NAME=(By.CSS_SELECTOR,"[data-test='content-wrapper'] h4")
 LISTINGS=(By.CSS_SELECTOR,"[data-test='@web/site-top-of-funnel/ProductCardWrapper']")
@@ -16,6 +15,11 @@ PRODUCT_IMAGE=(By.CSS_SELECTOR,"[data-test='@web/ProductCard/ProductCardImage/pr
 @then('Verify correct search results shown for {expected_text}')
 def verify_search_results(context, expected_text):
     context.app.search_results_page.verify_search_results(expected_text)
+
+@then('Verify {expected_text} in URL')
+def verify_results_url(context, expected_text):
+    context.app.search_results_page.verify_results_url(expected_text)
+
 
 
 @given('Open target search products')
@@ -35,8 +39,8 @@ def verify_item_added_to_cart(context):
 
 @when('Click on add to cart button')
 def click_on_add_to_cart_button(context):
-    context.driver.find_element(*ADD_CART_BUTTON).click()
-    sleep(6)
+    context.app.search_results_page.click_add_to_cart_button()
+
 
 @when('Store product name')
 def store_product_name(context):

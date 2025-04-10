@@ -6,21 +6,20 @@ CART_ITEM_TITLE=(By.CSS_SELECTOR,"[data-test='cartItem-title']")
 
 @when('Open cart page')
 def open_target_main(context):
-    context.driver.get('https://www.target.com/cart')
-    sleep(2)
+    context.app.cart_page.open()
+    # context.driver.get('https://www.target.com/cart')
+    # sleep(2)
 
 @then("Verify 'Your cart is empty' message is shown")
 def verify_cart_empty(context):
-    expected_result = 'Your cart is empty'
-    context.app.cart_page.cart_empty(expected_result)
-    # actual_result = context.driver.find_element(By.CSS_SELECTOR, "[data-test='boxEmptyMsg']").text
-    # assert expected_result == actual_result, f'Expected {expected_result} did not match actual {actual_result}'
+    context.app.cart_page.cart_empty()
 
 
 @then("Verify cart has {amount} item(s)")
 def verify_cart_has_1_item(context,amount):
-    actual_result = context.driver.find_element(*SUBTOTAL_CART).text
-    assert f'{amount} item' in actual_result, f'Expected {amount} items but got {actual_result}'
+    context.app.cart_page.verify_cart_has_items(amount)
+
+
 @then('Verify cart has correct product')
 #store before context.product_name
 def verify_cart_has_correct_product(context):
@@ -30,4 +29,7 @@ def verify_cart_has_correct_product(context):
      assert context.product_name[0:20] == product_name_in_cart[:20], f'Expected {context.product_name[:20] }  did not match {product_name_in_cart[:20]}'
 
      # assert context.product_name == product_name_in_cart, f'Expected {context.product_name }  did not match {product_name_in_cart}'
+@then('Verify correct page open')
+def verify_page_opened(context):
+    context.app.cart_page.verify_cart_page_opens()
 

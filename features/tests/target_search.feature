@@ -5,6 +5,8 @@ Feature: Target search test cases
     Given Open target main page
     When Search for tea
     Then Verify correct search results shown for tea
+    And Verify tea in URL
+
 #
 #  Scenario: User can search for a iPhone on Target
 #    Given Open target main page
@@ -36,6 +38,14 @@ Feature: Target search test cases
     And Open cart page
     Then Verify cart has 1 item(s)
     Then Verify cart has correct product
+
+  Scenario: User can add a one product to cart
+    Given Open target main page
+    When Search for plates
+    And  Click on add to cart button
+    And Open cart page
+   Then Verify cart has 1 item(s)
+
 
   Scenario:Verify that user can see product names and images
     Given Open target main page
